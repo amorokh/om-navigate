@@ -1,0 +1,16 @@
+{
+  "name": "OmNavigate",
+  "interface": "om-next",
+  "androidHost": "localhost",
+  "iosHost": "localhost",
+  "envRoots": {
+    "dev": "env/dev",
+    "prod": "env/prod"
+  },
+  "modules": [
+    "react-navigation"
+  ],
+  "imageDirs": [
+    "images"
+  ]
+}
