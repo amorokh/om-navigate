@@ -4,6 +4,7 @@
 (def ReactNavigation (js/require "react-navigation"))
 (def StackNavigator (.-StackNavigator ReactNavigation))
 (def TabNavigator (.-TabNavigator ReactNavigation))
+(def DrawerNavigator (.-DrawerNavigator ReactNavigation))
 
 (defn navigate-to 
   ([c target] (navigate-to c target {}))
@@ -24,8 +25,8 @@
     Object
     (render [this]
       (let [screen-factory (om/factory screen)
-            screen-props   (.. this -props -screenProps)
             navigation     (.. this -props -navigation)
+            screen-props   (.. this -props -screenProps)
             props          (assoc screen-props :navigation navigation)]
         (screen-factory props)))))
 
@@ -34,21 +35,22 @@
     static field navigator-proxy? true
     static field router (.-router navigator)
     Object
+    (shouldComponentUpdate [this _ _] true)
     (render [this]
-      (let [screen-props (.. this -props -screenProps)
-            navigation   (.. this -props -navigation)
-            props        (om/props this)
-            props        (if props props screen-props)]                          
+      (let [navigation   (.. this -props -navigation)
+            screen-props (.. this -props -screenProps)
+            om-props     (om/props this)
+            props        (if om-props om-props screen-props)]
         (navigator-factory navigator navigation props)))))
 
 (defn- transform-routes
   [routes]
   (reduce-kv
-    #(assoc %1 %2
-       (let [{:keys [screen]} %3]
-         (if (.-navigator-proxy? screen) 
-           %3 
-           {:screen (create-screen-proxy screen)})))
+    (fn [acc k {:keys [screen] :as v}]
+      (assoc acc k
+        (if (.-navigator-proxy? screen) 
+          v 
+          (assoc v :screen (create-screen-proxy screen)))))
     {}
     routes))
 
@@ -66,10 +68,14 @@
       (specify! proxy om/IQuery (query [this] queries)))
     proxy))
 
-(defn stack-navigator
+(defn create-stack-navigator
   [routes]
   (create-navigator routes #(StackNavigator %)))
 
-(defn tab-navigator
+(defn create-tab-navigator
   [routes]
   (create-navigator routes #(TabNavigator %)))
+
+(defn create-drawer-navigator
+  [routes]
+  (create-navigator routes #(DrawerNavigator %)))

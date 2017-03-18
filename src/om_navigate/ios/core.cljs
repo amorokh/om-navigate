@@ -52,12 +52,12 @@
       (text nil "List of all contacts...")
       (text nil (:app/all (om/props this)))
       (button #js {:onPress #(nav/navigate-to this :chat)
-                   :title "Chat with ...?"}))))
+                   :title "Discuss with ...?"}))))
 
 (def tab-routes {:recent {:screen RecentChatsScreen}
                  :contacts {:screen AllContactsScreen}})
 
-(def TabNav (nav/tab-navigator tab-routes))
+(def TabNav (nav/create-tab-navigator tab-routes))
 
 (defui HomeScreen
   static field navigationOptions
@@ -96,7 +96,7 @@
 (def stack-routes {:home {:screen TabNav}
                    :chat {:screen ChatScreen}})
 
-(def StackNav (nav/stack-navigator stack-routes))
+(def StackNav (nav/create-stack-navigator stack-routes))
 
 (defonce RootNode (sup/root-node! 1))
 (defonce app-root (om/factory RootNode))
