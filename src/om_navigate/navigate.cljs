@@ -9,9 +9,15 @@
 (defn navigate-to 
   ([c target] (navigate-to c target {}))
   ([c target params]
-   (let [props (om/props c)
+   (let [props      (om/props c)
          navigation (:navigation props)]
      (.navigate navigation (name target) (clj->js params)))))
+
+(defn navigate-back
+  [c]
+  (let [props      (om/props c)
+        navigation (:navigation props)]
+    (.goBack navigation nil)))
 
 (defn- navigator-factory
   [navigator navigation props]
@@ -69,12 +75,14 @@
     proxy))
 
 (defn create-stack-navigator
-  [routes]
-  (create-navigator routes #(StackNavigator %)))
+  ([routes] (create-stack-navigator routes {}))
+  ([routes cfg]
+   (create-navigator routes #(StackNavigator % (clj->js cfg)))))
 
 (defn create-tab-navigator
-  [routes]
-  (create-navigator routes #(TabNavigator %)))
+  ([routes] (create-tab-navigator routes {}))
+  ([routes cfg]
+   (create-navigator routes #(TabNavigator % (clj->js cfg)))))
 
 (defn create-drawer-navigator
   [routes]
