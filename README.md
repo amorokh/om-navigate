@@ -23,6 +23,8 @@ To run:
 
 `react-native run-ios`
 
+`lein figwheel`
+
 ## Solution
 
 The solution is based on the idea of dynamically creating proxy components for navigators and screens using the `ui` macro.
