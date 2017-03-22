@@ -1,13 +1,13 @@
-(ns om-navigate.simple-tabs
+(ns om-navigate.sections.simple-tabs
   (:require [om.next :as om :refer-macros [defui]]
             [om-navigate.elements :as e]
             [om-navigate.navigate :as nav]
-            [om-navigate.sample-text]))
+            [om-navigate.sections.sample-text]))
 
 (def Ionicons (js/require "react-native-vector-icons/Ionicons"))
 (def ionicons (partial e/create-element (.-default Ionicons)))
 
-(def sample-text (om/factory om-navigate.sample-text/SampleText))
+(def sample-text (om/factory om-navigate.sections.sample-text/SampleText))
 
 (defui MyNavScreen
   Object

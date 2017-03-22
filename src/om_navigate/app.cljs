@@ -1,20 +1,19 @@
 (ns om-navigate.app
   (:require [om.next :as om :refer-macros [defui]]
-            [re-natal.support :as sup]
             [om-navigate.elements :as e]
-            [om-navigate.state :as state]
             [om-navigate.navigate :as nav]
             [om-navigate.banner :as banner]
-            [om-navigate.simple-stack :as sstack]
-            [om-navigate.simple-tabs :as stabs]))
+            [om-navigate.sections :as s]))
 
-(def example-routes
-  {:SimpleStack {:name        "Stack Example"
-                 :description "A card stack"
-                 :screen      sstack/SimpleStack}
-   :SimpleTabs {:name        "Tabs Example"
-                :description "Tabs following platform conventions"
-                :screen      stabs/SimpleTabs}})
+(def example-routes {:SimpleStack {:name        "Stack Example"
+                                   :description "A card stack"
+                                   :screen      s/SimpleStack}
+                     :SimpleTabs  {:name        "Tabs Example"
+                                   :description "Tabs following platform conventions"
+                                   :screen      s/SimpleTabs}
+                     :Drawer      {:name        "Drawer Example"
+                                   :description "Android-style drawer navigation"
+                                   :screen      s/Drawer}})
 
 (def styles
   {:item 

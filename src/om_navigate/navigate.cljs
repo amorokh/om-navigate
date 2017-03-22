@@ -19,11 +19,8 @@
         navigation (:navigation props)]
     (.goBack navigation nil)))
 
-(defn- navigator-factory
-  [navigator navigation props]
-  (js/React.createElement navigator
-    #js {:navigation navigation
-         :screenProps props}))
+(defn- inst-navigator [nav-comp navigation props]
+  (js/React.createElement nav-comp #js {:navigation navigation :screenProps props}))
 
 (defn- create-screen-proxy [screen]
   (om/ui
@@ -47,7 +44,7 @@
             screen-props (.. this -props -screenProps)
             om-props     (om/props this)
             props        (if om-props om-props screen-props)]
-        (navigator-factory navigator navigation props)))))
+        (inst-navigator navigator navigation props)))))
 
 (defn- transform-routes
   [routes]
@@ -85,5 +82,6 @@
    (create-navigator routes #(TabNavigator % (clj->js cfg)))))
 
 (defn create-drawer-navigator
-  [routes]
-  (create-navigator routes #(DrawerNavigator %)))
+  ([routes] (create-drawer-navigator routes {}))
+  ([routes cfg]
+   (create-navigator routes #(DrawerNavigator % (clj->js cfg)))))

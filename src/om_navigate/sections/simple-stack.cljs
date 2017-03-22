@@ -1,10 +1,10 @@
-(ns om-navigate.simple-stack
+(ns om-navigate.sections.simple-stack
   (:require [om.next :as om :refer-macros [defui]]
             [om-navigate.elements :as e]
             [om-navigate.navigate :as nav]
-            [om-navigate.sample-text :as stext]))
+            [om-navigate.sections.sample-text]))
 
-(def sample-text (om/factory stext/SampleText))
+(def sample-text (om/factory om-navigate.sections.sample-text/SampleText))
 
 (defui MyNavScreen
   Object
@@ -47,7 +47,6 @@
                                           :onPress #(.setParams navigation #js {:mode (if edit? "" "edit")})})}))}
   Object
   (render [this]
-    (.log js/console "humdidum")
     (let [{:keys [navigation]} (om/props this)
           name (.. navigation -state -params -name)
           mode (.. navigation -state -params -mode)
