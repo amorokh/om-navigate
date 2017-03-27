@@ -3,7 +3,7 @@
             [om-navigate.elements :as e]
             [om-navigate.navigate :as nav]
             [om-navigate.banner :as banner]
-            [om-navigate.sections :as s]))
+            [om-navigate.screens :as s]))
 
 (def example-routes {:SimpleStack {:name        "Stack Example"
                                    :description "A card stack"
@@ -13,7 +13,10 @@
                                    :screen      s/SimpleTabs}
                      :Drawer      {:name        "Drawer Example"
                                    :description "Android-style drawer navigation"
-                                   :screen      s/Drawer}})
+                                   :screen      s/Drawer}
+                     :CustomTabs  {:name        "Custom Tabs"
+                                   :description "Custom tabs with tab router"
+                                   :screen      s/CustomTabs}})
 
 (def styles
   {:item 

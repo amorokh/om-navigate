@@ -1,10 +1,10 @@
-(ns om-navigate.sections.simple-stack
+(ns om-navigate.screens.simple-stack
   (:require [om.next :as om :refer-macros [defui]]
             [om-navigate.elements :as e]
             [om-navigate.navigate :as nav]
-            [om-navigate.sections.sample-text]))
+            [om-navigate.screens.sample-text]))
 
-(def sample-text (om/factory om-navigate.sections.sample-text/SampleText))
+(def sample-text (om/factory om-navigate.screens.sample-text/SampleText))
 
 (defui MyNavScreen
   Object

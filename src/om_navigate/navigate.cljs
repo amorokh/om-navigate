@@ -2,9 +2,12 @@
   (:require [om.next :as om :refer-macros [ui]]))
 
 (def ReactNavigation (js/require "react-navigation"))
+
 (def StackNavigator (.-StackNavigator ReactNavigation))
 (def TabNavigator (.-TabNavigator ReactNavigation))
 (def DrawerNavigator (.-DrawerNavigator ReactNavigation))
+
+(def TabRouter (.-TabRouter ReactNavigation))
 
 (defn navigate-to 
   ([c target] (navigate-to c target {}))
@@ -85,3 +88,23 @@
   ([routes] (create-drawer-navigator routes {}))
   ([routes cfg]
    (create-navigator routes #(DrawerNavigator % (clj->js cfg)))))
+
+(defn create-custom-navigator
+  ([comp router-factory routes] (create-custom-navigator comp router-factory routes {}))
+  ([comp router-factory routes cfg]
+   (create-navigator
+     routes 
+     (fn [routes']
+       (let [router    (router-factory routes' cfg)
+             navigator (.createNavigator ReactNavigation router)]
+         (.createNavigationContainer ReactNavigation (navigator comp)))))))
+
+(defn create-tab-router
+  ([routes] (create-tab-router routes {}))
+  ([routes cfg]
+   (TabRouter (clj->js routes) (clj->js cfg))))
+
+(defn add-navigation-helpers 
+  [src]
+  (.addNavigationHelpers ReactNavigation (clj->js src)))
+

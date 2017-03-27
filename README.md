@@ -27,7 +27,7 @@ To run:
 
 ## Solution
 
-The solution is based on the idea of dynamically creating proxy components for navigators and screens using the `ui` macro.
+The solution is based on the idea of dynamically creating proxy components for navigators and screens using the [`om/ui`](https://github.com/omcljs/om/wiki/Documentation-(om.next)#ui) macro.
 
 ### Navigator proxy
 
@@ -35,4 +35,4 @@ The navigator proxy collects queries from the screens of the route config and re
 
 ### Screen proxy
 
-The screen proxy picks up the om-next props fron the `screenProps` and the [navigation prop](https://reactnavigation.org/docs/navigators/navigation-prop), merges these and passes the result as the om-next props to the actual screen component. 
+The screen proxy picks up the om-next props from the `screenProps` and the [navigation prop](https://reactnavigation.org/docs/navigators/navigation-prop), merges these and passes the result as the om-next props to the actual screen component. 

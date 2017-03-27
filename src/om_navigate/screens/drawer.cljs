@@ -1,8 +1,8 @@
-(ns om-navigate.sections.drawer
+(ns om-navigate.screens.drawer
   (:require [om.next :as om :refer-macros [defui]]
             [om-navigate.elements :as e]
             [om-navigate.navigate :as nav]
-            [om-navigate.sections.sample-text]))
+            [om-navigate.screens.sample-text]))
 
 (def MaterialIcons (js/require "react-native-vector-icons/MaterialIcons"))
 (def material-icons (partial e/create-element (.-default MaterialIcons)))
@@ -11,7 +11,7 @@
   (let [tint (.-tintColor params)]
     (material-icons {:name name :size 24 :style {:color tint}})))
 
-(def sample-text (om/factory om-navigate.sections.sample-text/SampleText))
+(def sample-text (om/factory om-navigate.screens.sample-text/SampleText))
 
 (defui MyNavScreen
   Object

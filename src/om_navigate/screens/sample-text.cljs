@@ -1,4 +1,4 @@
-(ns om-navigate.sections.sample-text
+(ns om-navigate.screens.sample-text
   (:require [om.next :as om :refer-macros [defui]]
             [om-navigate.elements :as e]))
 
