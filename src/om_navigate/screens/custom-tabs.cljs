@@ -4,16 +4,16 @@
             [om-navigate.navigate :as nav]
             [om-navigate.screens.sample-text :refer [SampleText]]))
 
-(def styles {:container     {:marginTop      20}
-             :tab-container {:flexDirection  "row"
-                             :height         40}
-             :tab           {:flex           1
-                             :alignItems     "center"
-                             :justifyContent "center"
-                             :margin         4
-                             :borderWidth    1
-                             :borderColor    "#ddd"
-                             :borderRadius   4}})
+(def styles {:container {:marginTop 20}
+             :tab-container {:flexDirection "row"
+                             :height 40}
+             :tab {:flex 1
+                   :alignItems "center"
+                   :justifyContent "center"
+                   :margin 4
+                   :borderWidth 1
+                   :borderColor "#ddd"
+                   :borderRadius 4}})
 
 (def sample-text (om/factory SampleText))
 
