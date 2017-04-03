@@ -46,7 +46,7 @@
       (let [navigation   (.. this -props -navigation)
             screen-props (.. this -props -screenProps)
             om-props     (om/props this)
-            props        (if om-props om-props screen-props)]
+            props        (or om-props screen-props)]
         (inst-navigator navigator navigation props)))))
 
 (defn- transform-routes

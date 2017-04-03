@@ -2,18 +2,7 @@
   (:require [om.next :as om :refer-macros [defui]]
             [om-navigate.elements :as e]
             [om-navigate.navigate :as nav]
-            [om-navigate.screens.sample-text]))
-
-(def sample-text (om/factory om-navigate.screens.sample-text/SampleText))
-
-(defui MyNavScreen
-  Object
-  (render [this]
-    (let [{:keys [banner]} (om/props this)]
-      (e/scroll-view {:style {:marginTop 20}}
-        (sample-text {:text banner})
-        (e/button {:onPress #(nav/navigate-back this)
-                   :title "Go back"})))))
+            [om-navigate.screens.sample-text :refer [SampleText]]))
 
 (def styles {:container     {:marginTop      20}
              :tab-container {:flexDirection  "row"
@@ -25,6 +14,17 @@
                              :borderWidth    1
                              :borderColor    "#ddd"
                              :borderRadius   4}})
+
+(def sample-text (om/factory SampleText))
+
+(defui MyNavScreen
+  Object
+  (render [this]
+    (let [{:keys [banner]} (om/props this)]
+      (e/scroll-view {:style {:marginTop 20}}
+        (sample-text {:text banner})
+        (e/button {:onPress #(nav/navigate-back this)
+                   :title "Go back"})))))
 
 (def my-nav-screen (om/factory MyNavScreen))
 
@@ -73,8 +73,7 @@
           routes (.-routes state)
           index  (.-index state)
           router (.-router props)
-          active (.getComponentForState router state)
-          dispatch (.-dispatch navigation)]
+          active (.getComponentForState router state)]
       (e/view {:style (:container styles)}
         (custom-tab-bar {:navigation navigation})
         (js/React.createElement 

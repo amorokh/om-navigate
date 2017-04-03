@@ -2,12 +2,12 @@
   (:require [om.next :as om :refer-macros [defui]]
             [om-navigate.elements :as e]
             [om-navigate.navigate :as nav]
-            [om-navigate.screens.sample-text]))
+            [om-navigate.screens.sample-text :refer [SampleText]]))
 
 (def Ionicons (js/require "react-native-vector-icons/Ionicons"))
 (def ionicons (partial e/create-element (.-default Ionicons)))
 
-(def sample-text (om/factory om-navigate.screens.sample-text/SampleText))
+(def sample-text (om/factory SampleText))
 
 (defui MyNavScreen
   Object

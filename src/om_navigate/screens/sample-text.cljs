@@ -2,9 +2,7 @@
   (:require [om.next :as om :refer-macros [defui]]
             [om-navigate.elements :as e]))
 
-(def styles
-  {:sample-text
-     {:margin 14}})
+(def styles {:sample-text {:margin 14}})
   
 (defui SampleText
   Object
