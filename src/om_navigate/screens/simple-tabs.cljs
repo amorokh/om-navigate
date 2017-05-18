@@ -36,7 +36,7 @@
   #js {:tabBar #js {:label "Home" :icon #(load-icon "home" %)}}
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Home Tab" :navigation navigation}))))
 
 (defui MyPeopleScreen
@@ -44,7 +44,7 @@
   #js {:tabBar #js {:label "People" :icon #(load-icon "people" %)}}
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "People Tab" :navigation navigation}))))
 
 (defui MyChatScreen
@@ -52,7 +52,7 @@
   #js {:tabBar #js {:label "Chat" :icon #(load-icon "chatboxes" %)}}
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Chat Tab" :navigation navigation}))))
 
 (defui MySettingsScreen
@@ -60,7 +60,7 @@
   #js {:tabBar #js {:label "Settings" :icon #(load-icon "settings" %)}}
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Settings Tab" :navigation navigation}))))
 
 (def routes

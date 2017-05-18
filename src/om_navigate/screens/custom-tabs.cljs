@@ -31,19 +31,19 @@
 (defui MyHomeScreen
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Home Screen" :navigation navigation}))))
   
 (defui MyNotificationsScreen
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Notifications Screen" :navigation navigation}))))
   
 (defui MySettingsScreen
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Settings Screen" :navigation navigation}))))
   
 (defui CustomTabBar
@@ -67,18 +67,19 @@
   Object
   (shouldComponentUpdate [this _ _] true)
   (render [this]
-    (let [props  (.-props this)
-          navigation (.-navigation props)
-          state  (.-state navigation)
-          routes (.-routes state)
-          index  (.-index state)
-          router (.-router props)
-          active (.getComponentForState router state)]
+    (let [props        (.-props this)
+          screen-props (.-screenProps props)
+          navigation   (.-navigation props)
+          state        (.-state navigation)
+          routes       (.-routes state)
+          index        (.-index state)
+          router       (.-router props)
+          active       (.getComponentForState router state)]
       (e/view {:style (:container styles)}
         (custom-tab-bar {:navigation navigation})
         (js/React.createElement 
           active 
-          (nav/add-navigation-helpers {:navigation navigation :state (get routes index)}))))))
+          (nav/add-navigation-helpers #js {:navigation navigation :state (get routes index) :screenProps screen-props}))))))
 
 (def routes {:Home 
                {:screen MyHomeScreen
@@ -95,5 +96,3 @@
                   nav/create-tab-router
                   routes
                   {:initialRouteName "Home"}))
-
-

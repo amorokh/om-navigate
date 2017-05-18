@@ -12,51 +12,61 @@
 (defn navigate-to 
   ([c target] (navigate-to c target {}))
   ([c target params]
-   (let [props      (om/props c)
-         navigation (:navigation props)]
+   (let [navigation (or (.. c -props -navigation) (:navigation (om/props c)))]
      (.navigate navigation (name target) (clj->js params)))))
 
-(defn navigate-back
-  [c]
-  (let [props      (om/props c)
-        navigation (:navigation props)]
+(defn navigate-back [c]
+  (let [navigation (or (.. c -props -navigation) (:navigation (om/props c)))]
     (.goBack navigation nil)))
 
-(defn- inst-navigator [nav-comp navigation props]
-  (js/React.createElement nav-comp #js {:navigation navigation :screenProps props}))
+(defn- render-screen [screen-comp navigation props parent]
+  (let [screen-factory (om/factory screen-comp)
+        reconciler#    (om/get-reconciler parent)
+        depth#         (inc (om/depth parent))
+        shared#        (om/shared parent)
+        instrument#    (om/instrument parent)]
+    (binding [om/*reconciler* reconciler#
+              om/*depth*      depth#
+              om/*shared*     shared#
+              om/*instrument* instrument#
+              om/*parent*     parent]
+      (.cloneElement js/React (screen-factory props) #js {:navigation navigation}))))
 
 (defn- create-screen-proxy [screen]
   (om/ui
+    static field router (.-router screen)
     static field navigationOptions (.-navigationOptions screen)
     Object
+    (shouldComponentUpdate [this _ _] true)
     (render [this]
-      (let [screen-factory (om/factory screen)
-            navigation     (.. this -props -navigation)
+      (let [navigation     (.. this -props -navigation)
             screen-props   (.. this -props -screenProps)
-            props          (assoc screen-props :navigation navigation)]
-        (screen-factory props)))))
+            parent         (:parent screen-props)
+            props          (:props screen-props)]
+        (render-screen screen navigation props parent)))))
 
-(defn- create-navigator-proxy [navigator]
+(defn- render-navigator [nav-comp navigation props parent]
+  (js/React.createElement nav-comp #js {:navigation navigation :screenProps {:props props :parent parent}}))
+
+(defn- create-navigator-proxy [navigator name]
   (om/ui
-    static field navigator-proxy? true
     static field router (.-router navigator)
     Object
     (shouldComponentUpdate [this _ _] true)
     (render [this]
-      (let [navigation   (.. this -props -navigation)
+      (set! (.-proxy-for this) name)
+      (let [om-props     (om/props this)
             screen-props (.. this -props -screenProps)
-            om-props     (om/props this)
+            navigation   (.. this -props -navigation)
             props        (or om-props screen-props)]
-        (inst-navigator navigator navigation props)))))
+        (render-navigator navigator navigation props this)))))
 
 (defn- transform-routes
   [routes]
   (reduce-kv
     (fn [acc k {:keys [screen] :as v}]
       (assoc acc k
-        (if (.-navigator-proxy? screen) 
-          v 
-          (assoc v :screen (create-screen-proxy screen)))))
+         (assoc v :screen (create-screen-proxy screen))))
     {}
     routes))
 
@@ -69,7 +79,7 @@
   [routes factory]
   (let [queries   (into [] (extract-queries routes))
         navigator (factory (clj->js (transform-routes routes)))
-        proxy     (create-navigator-proxy navigator)]
+        proxy     (create-navigator-proxy navigator name)]
     (when (seq queries)
       (specify! proxy om/IQuery (query [this] queries)))
     proxy))
@@ -106,5 +116,5 @@
 
 (defn add-navigation-helpers 
   [src]
-  (.addNavigationHelpers ReactNavigation (clj->js src)))
+  (.addNavigationHelpers ReactNavigation src))
 
