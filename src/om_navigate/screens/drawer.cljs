@@ -31,7 +31,7 @@
   #js {:drawer #js {:label "Inbox" :icon #(load-icon "move-to-inbox" %)}}
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Inbox Screen" :navigation navigation}))))
 
 (defui DraftsScreen
@@ -39,7 +39,7 @@
   #js {:drawer #js {:label "Drafts" :icon #(load-icon "drafts" %)}}
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Drafts Screen" :navigation navigation}))))
 
 (def routes {:Inbox  {:screen InboxScreen

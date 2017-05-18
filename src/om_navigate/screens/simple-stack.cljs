@@ -25,14 +25,14 @@
   static field navigationOptions #js {:title "Welcome"}
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)]
+    (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Home Screen" :navigation navigation}))))
   
 (defui MyPhotosScreen
   static field navigationOptions #js {:title "Photos"}
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)
+    (let [navigation (.. this -props -navigation)
           name                 (.. navigation -state -params -name)]
       (my-nav-screen {:banner (str name "'s Photos") :navigation navigation}))))
   
@@ -47,7 +47,7 @@
                                           :onPress #(.setParams navigation #js {:mode (if edit? "" "edit")})})}))}
   Object
   (render [this]
-    (let [{:keys [navigation]} (om/props this)
+    (let [navigation (.. this -props -navigation)
           name (.. navigation -state -params -name)
           mode (.. navigation -state -params -mode)
           edit? (= mode "edit")
