@@ -38,13 +38,14 @@
   
 (defui MyProfileScreen
   static field navigationOptions
-  #js {:header (fn [navigation]
-                 (let [name  (.. navigation -state -params -name)
-                       mode  (.. navigation -state -params -mode)
-                       edit? (= mode "edit")]
-                   #js {:title (str name "'s Profile")
-                        :right (e/button {:title (if edit? "Done" "Edit")
-                                          :onPress #(.setParams navigation #js {:mode (if edit? "" "edit")})})}))}
+  (fn [props]
+    (let [navigation (.-navigation props)
+          name       (.. navigation -state -params -name)
+          mode       (.. navigation -state -params -mode)
+          edit?      (= mode "edit")]
+      #js {:headerTitle (str name "'s Profile")
+           :headerRight (e/button {:title (if edit? "Done" "Edit")
+                                   :onPress #(.setParams navigation #js {:mode (if edit? "" "edit")})})}))
   Object
   (render [this]
     (let [navigation (.. this -props -navigation)

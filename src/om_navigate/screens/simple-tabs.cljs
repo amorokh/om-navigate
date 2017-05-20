@@ -33,7 +33,8 @@
 
 (defui MyHomeScreen
   static field navigationOptions
-  #js {:tabBar #js {:label "Home" :icon #(load-icon "home" %)}}
+  #js {:tabBarLabel "Home" 
+       :tabBarIcon #(load-icon "home" %)}
   Object
   (render [this]
     (let [navigation (.. this -props -navigation)]
@@ -41,7 +42,8 @@
 
 (defui MyPeopleScreen
   static field navigationOptions
-  #js {:tabBar #js {:label "People" :icon #(load-icon "people" %)}}
+  #js {:tabBarLabel "People" 
+       :tabBarIcon #(load-icon "people" %)}
   Object
   (render [this]
     (let [navigation (.. this -props -navigation)]
@@ -49,7 +51,8 @@
 
 (defui MyChatScreen
   static field navigationOptions
-  #js {:tabBar #js {:label "Chat" :icon #(load-icon "chatboxes" %)}}
+  #js {:tabBarLabel "Chat" 
+       :tabBarIcon #(load-icon "chatboxes" %)}
   Object
   (render [this]
     (let [navigation (.. this -props -navigation)]
@@ -57,7 +60,8 @@
 
 (defui MySettingsScreen
   static field navigationOptions
-  #js {:tabBar #js {:label "Settings" :icon #(load-icon "settings" %)}}
+  #js {:tabBarLabel "Settings" 
+       :tabBarIcon #(load-icon "settings" %)}
   Object
   (render [this]
     (let [navigation (.. this -props -navigation)]
