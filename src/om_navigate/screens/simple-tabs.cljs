@@ -2,78 +2,112 @@
   (:require [om.next :as om :refer-macros [defui]]
             [om-navigate.elements :as e]
             [om-navigate.navigate :as nav]
-            [om-navigate.screens.sample-text :refer [SampleText]]))
+            [om-navigate.views.sample-text :refer [sample-text]]))
 
-(def Ionicons (js/require "react-native-vector-icons/Ionicons"))
-(def ionicons (partial e/create-element (.-default Ionicons)))
+;; =============================================================================
+;; Tab icon
 
-(def sample-text (om/factory SampleText))
+(defn tabicon [name params]
+  (let [icon (str "ios-" name)
+        tint (.-tintColor params)
+        focused? (.-focused params)
+        icon (if focused? icon (str icon "-outline"))]
+    (e/ionicons #js {:name icon :size 26 :style #js {:color tint}})))
+
+;; =============================================================================
+;; MyNavScreen
 
 (defui MyNavScreen
   Object
   (render [this]
     (let [{:keys [banner]} (om/props this)]
-      (e/scroll-view {:style {:marginTop 20}}
+      (e/scroll-view #js {:style #js {:marginTop 20}}
         (sample-text {:text banner})
-        (e/button {:onPress #(nav/navigate-to this :Home)
-                   :title "Go to home tab"})
-        (e/button {:onPress #(nav/navigate-to this :Settings)
-                   :title "Go to settings tab"})
-        (e/button {:onPress #(nav/navigate-back this)
-                   :title "Go back"})))))
+        (e/button #js {:onPress #(nav/navigate-to this ::home)
+                       :title "Go to home tab"})
+        (e/button #js {:onPress #(nav/navigate-to this ::settings)
+                       :title "Go to settings tab"})
+        (e/button #js {:onPress #(nav/navigate-back this)
+                       :title "Go back"})))))
 
 (def my-nav-screen (om/factory MyNavScreen))
 
-(defn load-icon [name params]
-  (let [icon (str "ios-" name)
-        tint (.-tintColor params)
-        focused? (.-focused params)
-        icon (if focused? icon (str icon "-outline"))]
-    (ionicons {:name icon :size 26 :style {:color tint}})))
+;; =============================================================================
+;; MyHomeScreen
 
 (defui MyHomeScreen
-  static field navigationOptions
-  #js {:tabBarLabel "Home" 
-       :tabBarIcon #(load-icon "home" %)}
+  static nav/INavOptions
+  (options [this _ _ _]
+    #js {:tabBarLabel "Home" 
+         :tabBarIcon #(tabicon "home" %)})
+
   Object
   (render [this]
     (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Home Tab" :navigation navigation}))))
 
+;; =============================================================================
+;; MyPeopleScreen
+
 (defui MyPeopleScreen
-  static field navigationOptions
-  #js {:tabBarLabel "People" 
-       :tabBarIcon #(load-icon "people" %)}
+  static nav/INavOptions
+  (options [this _ _ _]
+    #js {:tabBarLabel "People" 
+         :tabBarIcon #(tabicon "people" %)})
+
   Object
   (render [this]
     (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "People Tab" :navigation navigation}))))
 
+;; =============================================================================
+;; MyChatScreen
+
 (defui MyChatScreen
-  static field navigationOptions
-  #js {:tabBarLabel "Chat" 
-       :tabBarIcon #(load-icon "chatboxes" %)}
+  static nav/INavOptions
+  (options [this _ _ _]
+    #js {:tabBarLabel "Chat" 
+         :tabBarIcon #(tabicon "chatboxes" %)})
+
   Object
   (render [this]
     (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Chat Tab" :navigation navigation}))))
 
+;; =============================================================================
+;; MySettingsScreen
+
 (defui MySettingsScreen
-  static field navigationOptions
-  #js {:tabBarLabel "Settings" 
-       :tabBarIcon #(load-icon "settings" %)}
+  static nav/INavOptions
+  (options [this _ _ _]
+    #js {:tabBarLabel "Settings" 
+         :tabBarIcon #(tabicon "settings" %)})
+
   Object
   (render [this]
     (let [navigation (.. this -props -navigation)]
       (my-nav-screen {:banner "Settings Tab" :navigation navigation}))))
 
-(def routes
-  {:Home {:screen MyHomeScreen :path ""}
-   :People {:screen MyPeopleScreen :path "cart"}
-   :Chat {:screen MyChatScreen :path "chat"}
-   :Settings {:screen MySettingsScreen :path "settings"}})
+;; =============================================================================
+;; Routes
 
-(def SimpleTabs (nav/create-tab-navigator 
+(def routes
+  {::home #js {:screen MyHomeScreen 
+               :path   ""}
+
+   ::people #js {:screen MyPeopleScreen 
+                 :path   "cart"}
+
+   ::chat #js {:screen MyChatScreen
+               :path   "chat"}
+   
+   ::settings #js {:screen MySettingsScreen 
+                   :path   "settings"}})
+
+;; =============================================================================
+;; SimpleTabs
+
+(def SimpleTabs (nav/tab-navigator 
                   routes 
-                  {:tabBarOptions {:activeTintColor "#e91e63"}}))
+                  #js {:tabBarOptions #js {:activeTintColor "#e91e63"}}))
 

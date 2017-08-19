@@ -4,7 +4,7 @@
 (def ReactNative (js/require "react-native"))
 
 (defn create-element [rn-comp opts & children]
-  (apply js/React.createElement rn-comp (clj->js opts) children))
+  (apply js/React.createElement rn-comp opts children))
 
 (def app-registry (.-AppRegistry ReactNative))
 (def view (partial create-element (.-View ReactNative)))
@@ -17,3 +17,9 @@
 
 (defn alert [title]
   (.alert (.-Alert ReactNative) title))
+
+(def MaterialIcons (js/require "react-native-vector-icons/MaterialIcons"))
+(def material-icons (partial create-element (.-default MaterialIcons)))
+
+(def Ionicons (js/require "react-native-vector-icons/Ionicons"))
+(def ionicons (partial create-element (.-default Ionicons)))
